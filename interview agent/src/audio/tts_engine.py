@@ -20,8 +20,7 @@ class TextToSpeech:
             return
             
         try:
-            # 1. Use a standard sample rate (16000 Hz) that is safer for all hardware
-            RATE = 16000
+            RATE = 16000 #for my PC user can test this with 48000 or 32000
             
             options = SpeakOptions(
                 model="aura-asteria-en",
@@ -36,7 +35,7 @@ class TextToSpeech:
                 options
             )
 
-            # 3. BUFFERING: Collect all audio bytes first to avoid "network stutter" noise
+            # 3. BUFFERING:- Collect all audio bytes first to avoid network stutter and noise
             audio_data = bytearray()
             for chunk in response.stream:
                 if chunk:
@@ -68,7 +67,6 @@ class TextToSpeech:
     def cleanup(self):
         self.p.terminate()
 
-    # --- FIX: THIS METHOD IS NOW INSIDE THE CLASS ---
     def generate_audio_stream(self, text):
         """
         Generates audio but does NOT play it. 
@@ -78,7 +76,7 @@ class TextToSpeech:
             return
 
         try:
-            # Same options as before, but we will yield the result
+            # Same options as before, but we will get the result
             options = SpeakOptions(
                 model="aura-asteria-en",
                 encoding="linear16",      
@@ -103,4 +101,5 @@ if __name__ == "__main__":
     print("Generating audio... (Wait a moment)")
     tts.speak("Hello Hitesh. This is a test using sixteen kilohertz audio. It should sound much clearer now.")
     print("Done. Check 'debug_output.wav' in your folder if it still sounds bad.")
+
     tts.cleanup()
