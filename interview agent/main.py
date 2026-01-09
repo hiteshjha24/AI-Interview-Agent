@@ -39,23 +39,19 @@ class InterviewAgent(RealTimeTranscriber):
             self.is_processing = True
             print(f"\nCandidate: {user_text}")
 
-            # --- STOP LISTENING (Prevent Echo) ---
             # We pause the microphone stream so the AI doesn't hear itself
             if self.stream.is_active():
                 self.stream.stop_stream()
 
-            # --- THINK ---
             ai_response = self.brain.get_response(user_text)
             print(f"Interviewer: {ai_response}")
-
-            # --- SPEAK ---
+            
             self.mouth.speak(ai_response)
 
         except Exception as e:
             print(f"Error in conversation loop: {e}")
             
         finally:
-            # --- RESUME LISTENING ---
             # Turn the mic back on for the user's turn
             print("\nListening...")
             if self.stream.is_stopped():
@@ -70,6 +66,5 @@ if __name__ == "__main__":
     
     # Initialize the integrated agent
     agent = InterviewAgent()
-    
-    # Start the loop (this uses the logic from deepgram_stt.py but with our new on_message)
+
     agent.start_transcription()
